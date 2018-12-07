@@ -12,7 +12,7 @@ const crypto = require('crypto');
  * @param {string} [salt] - The salt to add to the data before hashing.
  * @returns {string} A string with the hashed value.
  */
-exports.createHash = (data, salt = '') => {
+exports.createHash = (data, salt = 'pepper') => {
   let shasum = crypto.createHash('sha256');
   shasum.update(data + salt);
   return shasum.digest('hex');
