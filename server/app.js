@@ -78,6 +78,32 @@ app.post('/links',
 // Write your authentication routes here
 /************************************************************/
 
+app.post('/login', (req, res, next) => {
+ 
+  // console.log('models.Users: ', models);
+
+  let options = {
+    username: req.body.username
+  }
+  return models.Users.get(options)
+  .then(results => {
+    console.log('attempted pw: ', req.body.password);
+    console.log('db password: ', results.password);
+    console.log('db salt', results.salt);
+    console.log(models.Users.compare(req.body.password, results.password, results.salt));
+  });
+
+  
+
+
+
+  Auth.createSession(req, res, next);
+  
+  console.log(req.body.username);
+  console.log(req.body.password);
+  
+  // res.send()
+})
 
 
 /************************************************************/
