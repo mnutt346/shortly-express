@@ -92,9 +92,10 @@ app.post('/login', (req, res, next) => {
         .then(bool => {
           if (bool === false) {
             throw 'Password and/or username did not match';
-            //redirect back to login
+            //redirect back to login;
           }
-        })
+          //
+        });
     });
 
 
