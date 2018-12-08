@@ -20,6 +20,7 @@ class Sessions extends Model {
    * with a user that is logged in.
    */
   isLoggedIn(session) {
+    console.log(!!session.user);
     return !!session.user;
   }
 
@@ -35,10 +36,12 @@ class Sessions extends Model {
   get(options) {
     return super.get.call(this, options)
       .then(session => {
+        console.log('********inside get call: ******', this, options);
         if (!session || !session.userId) {
           return session;
         }
         return Users.get({ id: session.userId }).then(user => {
+          console.log('inside sessions get poop: ', sessions);
           session.user = user;
           return session;
         });

@@ -78,9 +78,24 @@ app.post('/links',
 // Write your authentication routes here
 /************************************************************/
 
-app.post('/login', (req, res, next) => {
+app.post('/signup', (req, res, next) => {
+  let user = {
+    username: req.body.username,
+    password: req.body.password
+  }
 
-  // console.log('models.Users: ', models);
+  models.Users.create(user)
+    .then(namedobject => {
+      res.status(201).redirect('/');
+      console.log(namedobject);
+    })
+
+    .error(error => {
+      res.redirect('/signup');
+    })
+})
+
+app.post('/login', (req, res, next) => {
 
   let options = {
     username: req.body.username
@@ -88,25 +103,17 @@ app.post('/login', (req, res, next) => {
 
   return models.Users.get(options)
     .then(results => {
-      models.Users.compare(req.body.password, results.password, results.salt)
-        .then(bool => {
-          if (bool === false) {
-            throw 'Password and/or username did not match';
-            //redirect back to login;
-          }
-          //
-        });
+      let verified = models.Users.compare(req.body.password, results.password, results.salt)
+      if (verified === false) {
+        console.log('I no happen')
+        throw 'Password and/or username did not match';
+      }
+      else {
+        Auth.createSession(req, res, next);
+      }
     });
-
-
-
-
-
-  Auth.createSession(req, res, next);
-
   console.log(req.body.username);
   console.log(req.body.password);
-
   // res.send();
 });
 
