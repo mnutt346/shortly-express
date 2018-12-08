@@ -72,7 +72,7 @@ app.post('/links',
       .catch(link => {
         res.status(200).send(link);
       });
-  });
+  })
 
 /************************************************************/
 // Write your authentication routes here
