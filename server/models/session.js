@@ -20,7 +20,7 @@ class Sessions extends Model {
    * with a user that is logged in.
    */
   isLoggedIn(session) {
-    console.log(!!session.user);
+
     return !!session.user;
   }
 
@@ -36,8 +36,9 @@ class Sessions extends Model {
   get(options) {
     return super.get.call(this, options)
       .then(session => {
-        console.log('********inside get call: ******', this, options);
+        // console.log('********inside get call: ******', this, options);
         if (!session || !session.userId) {
+          console.log('INSEIDE SESSION LOG ***********: ');
           return session;
         }
         return Users.get({ id: session.userId }).then(user => {
