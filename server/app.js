@@ -87,7 +87,7 @@ app.post('/signup', (req, res, next) => {
   models.Users.create(user)
     .then(namedobject => {
       res.status(201).redirect('/');
-      console.log(namedobject);
+      // console.log(namedobject);
     })
 
     .error(error => {
@@ -98,24 +98,29 @@ app.post('/signup', (req, res, next) => {
 app.post('/login', (req, res, next) => {
 
   let options = {
-    username: req.body.username
+    username: req.body.username,
   };
 
   return models.Users.get(options)
     .then(results => {
-      let verified = models.Users.compare(req.body.password, results.password, results.salt)
-      if (verified === false) {
-        console.log('I no happen')
-        throw 'Password and/or username did not match';
-      }
-      else {
-        Auth.createSession(req, res, next);
-      }
-    });
-  console.log(req.body.username);
-  console.log(req.body.password);
-  // res.send();
-});
+      // console.log(results)
+      if (results === undefined) {
+        // console.log('i made it here');
+        res.redirect('/login');
+      } else if (results) {
+        let verified = models.Users.compare(req.body.password, results.password, results.salt)
+        if (verified === false) {
+          // console.log('I no happen')
+          res.redirect('/login');
+        }
+        else {
+          res.status(201).redirect('/');
+        }
+      };
+      console.log(req.body.username);
+      console.log(req.body.password);
+    })
+})
 
 
 /************************************************************/
